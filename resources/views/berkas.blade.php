@@ -10,25 +10,38 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
+    {{-- @dd($years) --}}
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4 mt-4">
+                            <div class="row mb-3">
+                                <div class="col-sm-4">
+                                    <form action="/berkas" method="GET">
+                                        <label for="tahun">Pilih Tahun:</label>
+                                        <select name="tahun" id="tahun" class="form-control"
+                                            onchange="this.form.submit()">
+                                            @foreach ($years as $year)
+                                                <option value="{{ $year }}"
+                                                    @if ($year == request('tahun')) selected @endif>{{ $year }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <a href="berkas/{{ $berkas->id }}/edit" class="btn btn-success mb-3"><i
+                                    <a href="berkas/{{ $berkas[0]->id }}/edit" class="btn btn-success mb-3"><i
                                             class="bi bi-upload"></i>
-                                        Upload
-                                        Berkas</a>
+                                        Upload Berkas</a>
                                     <table id="dataBerkas"
                                         class="table table-bordered table-striped dataTable dtr-inline collapsed"
                                         aria-describedby="example1_info">
                                         <thead>
                                             <tr>
-
                                                 <th class="sorting sorting_asc" tabindex="0" aria-controls="example1"
                                                     rowspan="1" colspan="1" aria-sort="ascending"
                                                     aria-label="Jenis Berkas: activate to sort column descending">
@@ -42,19 +55,17 @@
                                                 </th>
                                             </tr>
                                         </thead>
+                                        {{-- @dd($berkas) --}}
                                         <tbody>
                                             @foreach ($kolom as $i => $kolomBerkas)
-                                                <tr
-                                                    class="@if ($i - (1 % 2)) == 0) odd
-                                                    @else even @endif
-                                                ">
+                                                <tr class="@if ($i - (1 % 2) == 0) odd @else even @endif">
                                                     <td>{{ $kolomBerkas }}</td>
                                                     <td>
-                                                        @if (empty($berkas[$kolomBerkas]))
+                                                        @if (empty($berkas[0][$kolomBerkas]))
                                                             <span class="text-danger">Berkas Belum diupload</span>
                                                         @else
                                                             <a
-                                                                href="/berkas/{{ $berkas->id }}/download/{{ $kolomBerkas }}">{{ $berkas[$kolomBerkas] }}</a>
+                                                                href="/berkas/{{ $berkas[0]->id }}/download/{{ $kolomBerkas }}">{{ $berkas[0][$kolomBerkas] }}</a>
                                                         @endif
                                                     </td>
 

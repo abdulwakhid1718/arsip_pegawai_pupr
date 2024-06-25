@@ -176,41 +176,46 @@ class DatabaseSeeder extends Seeder
         
         Jabatan::factory()->createMany($jabatan);
         
-        Pegawai::factory()->create([
-            'user_id' => '1',
-            'bidang_id' => '1',
-            'jabatan_id' => '1',
-            'name' => 'Putri Nur Ali Sahlum',
-            'jenis_kelamin' => 'Perempuan',
-            'tempat_lahir' => 'Bangkalan',
-            'tanggal_lahir' => '2002-03-28',
-            'pendidikan' => 's1',
-            'no_hp' => '083112299283',
-            'alamat' => 'Bangkalan'
-        ]);
-        Pegawai::factory()->create([
-            'user_id' => '2',
-            'bidang_id' => '2',
-            'jabatan_id' => '2',
-            'name' => 'Abdul Wakhid',
-            'jenis_kelamin' => 'Perempuan',
-            'tempat_lahir' => 'Bangkalan',
-            'tanggal_lahir' => '2002-03-28',
-            'pendidikan' => 's1',
-            'no_hp' => '083112299283',
-            'alamat' => 'Bangkalan'
-        ]);
-        Pegawai::factory()->create([
-            'user_id' => '3',
-            'bidang_id' => '2',
-            'jabatan_id' => '3',
-            'name' => 'Kurniawan Dwi',
-            'jenis_kelamin' => 'Perempuan',
-            'tempat_lahir' => 'Bangkalan',
-            'tanggal_lahir' => '2002-03-28',
-            'pendidikan' => 's1',
-            'no_hp' => '083112299283',
-            'alamat' => 'Bangkalan'
+        // Pegawai::factory()->create([
+        //     'user_id' => '1',
+        //     'bidang_id' => '1',
+        //     'jabatan_id' => '1',
+        //     'name' => 'Putri Nur Ali Sahlum',
+        //     'jenis_kelamin' => 'Perempuan',
+        //     'tempat_lahir' => 'Bangkalan',
+        //     'tanggal_lahir' => '2002-03-28',
+        //     'pendidikan' => 's1',
+        //     'no_hp' => '083112299283',
+        //     'alamat' => 'Bangkalan'
+        // ]);
+        // Pegawai::factory()->create([
+        //     'user_id' => '2',
+        //     'bidang_id' => '2',
+        //     'jabatan_id' => '2',
+        //     'name' => 'Abdul Wakhid',
+        //     'jenis_kelamin' => 'Perempuan',
+        //     'tempat_lahir' => 'Bangkalan',
+        //     'tanggal_lahir' => '2002-03-28',
+        //     'pendidikan' => 's1',
+        //     'no_hp' => '083112299283',
+        //     'alamat' => 'Bangkalan'
+        // ]);
+        // Pegawai::factory()->create([
+        //     'user_id' => '3',
+        //     'bidang_id' => '2',
+        //     'jabatan_id' => '3',
+        //     'name' => 'Kurniawan Dwi',
+        //     'jenis_kelamin' => 'Perempuan',
+        //     'tempat_lahir' => 'Bangkalan',
+        //     'tanggal_lahir' => '2002-03-28',
+        //     'pendidikan' => 's1',
+        //     'no_hp' => '083112299283',
+        //     'alamat' => 'Bangkalan'
+        // ]);
+
+        $this->call([
+            PegawaiSeeder::class,
+            // Panggil seeder lain jika ada
         ]);
     }
 }

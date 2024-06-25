@@ -47,8 +47,5 @@ class DashboardController extends Controller
             'status' => $statusProfil, 
             'kelengkapan_berkas' => $pegawai->kelengkapan_berkas,
         ]);
-
     }
-
-    
 }

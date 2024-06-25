@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Pegawai;
 use App\Models\Bidang;
+use App\Models\Jabatan;
+use App\Models\Pegawai;
+use Illuminate\Database\Seeder;
 
 class PegawaiSeeder extends Seeder
 {
@@ -21,17 +22,25 @@ class PegawaiSeeder extends Seeder
         // Lewati baris header jika ada
         fgetcsv($file);
 
+        $userId = 1; // Inisialisasi user_id mulai dari 1
+
         while (($row = fgetcsv($file)) !== false) {
             // Cari atau buat bidang
-            $bidang = Bidang::firstOrCreate(['nama_bidang' => $row[4]]);
+            $bidang = Bidang::firstWhere('nama_bidang', $row[2]);
+            $jabatan = Jabatan::firstWhere('nama', $row[1]);
 
             // Masukkan data ke dalam tabel pegawai
-            Pegawai::create([
-                'name' => $row[0],
-                'jenis_kelamin' => "Laki-Laki",
-                'jabatan' => $row[2],
-                'bidang_id' => $bidang->id,
-            ]);
+            if ($bidang && $jabatan) {
+                Pegawai::create([
+                    'name' => $row[0],
+                    'jenis_kelamin' => "Laki-Laki",
+                    'user_id' => $userId, // Gunakan user_id yang diiterasi
+                    'jabatan_id' => $jabatan->id,
+                    'bidang_id' => $bidang->id,
+                    'pendidikan' => $row[3]
+                ]);
+            }
+            $userId++; // Tingkatkan nilai user_id untuk iterasi berikutnya
         }
 
         fclose($file);

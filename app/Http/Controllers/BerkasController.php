@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Berkas;
 use App\Models\Pegawai;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBerkasRequest;
 use App\Http\Requests\UpdateBerkasRequest;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 
 class BerkasController extends Controller
 {
@@ -35,24 +36,26 @@ class BerkasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $berkas = Berkas::firstOrCreate(
-            ['pegawai_id' => auth()->user()->id],
-        );
+        // Mendapatkan tahun yang tersedia dalam tabel 'berkas'
+        $years = DB::table('berkas')
+            ->select('tahun')
+            ->distinct()
+            ->orderBy('tahun', 'desc')
+            ->pluck('tahun')
+            ->toArray();
 
-        $kolomBerkas = Schema::getColumnListing('berkas');
+        // Mendapatkan tahun yang dipilih dari query string, atau tahun saat ini jika tidak ada
+        $selectedYear = $request->input('tahun', date('Y'));
 
-        // Kolom-kolom yang tidak diinginkan
-        $kolomBerkasTidakDiinginkan = ['id', 'pegawai_id', 'created_at', 'updated_at'];
-        
-        // Menghilangkan kolom yang tidak diinginkan dari array nama kolom
-        $kolomBerkas = array_diff($kolomBerkas, $kolomBerkasTidakDiinginkan);
-        
-        return view('berkas', [
-            'berkas'=> $berkas,
-            'kolom'=> $kolomBerkas
-        ]);
+        // Mengambil data berkas berdasarkan tahun yang dipilih
+        $berkas = Berkas::where('tahun', $selectedYear)->get();
+
+        // Kolom yang akan ditampilkan
+        $kolom = ['ktp', 'sk_pengangkatan', 'sk_pangkat', 'sk_berkala', 'sk_jabatan', 'ijazah', 'sk_tugas_ijin_belajar', 'sk_impassing', 'sk_mutasi', 'sumpah_pegawai', 'sertifikat_kediklatan', 'skp'];
+
+        return view('berkas', compact('berkas', 'kolom', 'years', 'selectedYear'));
     }
 
     /**

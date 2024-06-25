@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('berkas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pegawai_id');
+            $table->foreignId('pegawai_id')->constrained()->onDelete('cascade'); // Menambahkan foreign key constraint
+            $table->integer('tahun')->default(date('Y')); // Menyediakan default tahun dinamis
             $table->string('ktp')->nullable();
             $table->string('sk_pengangkatan')->nullable();
             $table->string('sk_pangkat')->nullable();
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->string('skp')->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**

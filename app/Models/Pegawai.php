@@ -29,9 +29,9 @@ class Pegawai extends Model
         return $this->belongsTo(Jabatan::class);
     }
 
-    public function berkas(): HasOne
+    public function berkas()
     {
-        return $this->hasOne(Berkas::class);
+        return $this->hasMany(Berkas::class);
     }
 
     public function cekKelengkapanBerkas($namaKolom)
