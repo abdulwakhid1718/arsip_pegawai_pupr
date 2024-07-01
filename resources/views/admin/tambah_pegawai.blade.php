@@ -18,8 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Form Upload Berkas dengan Nilai Awal dari Database -->
-                        <form action="/pegawai/" method="POST" enctype="multipart/form-data">
-                            @method('put')
+                        <form action="/pegawai" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">

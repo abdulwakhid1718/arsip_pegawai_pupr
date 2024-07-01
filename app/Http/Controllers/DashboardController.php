@@ -12,7 +12,8 @@ class DashboardController extends Controller
     public function index()
     {
         $id = auth()->user()->id;
-        $pegawai = Pegawai::findOrFail($id);
+        $pegawai = Pegawai::where('user_id',$id)->get()[0];
+        // dd($pegawai);
 
         // Ambil daftar kolom dari struktur tabel Pegawai dan table berkas
         $columnsToCheck = Schema::getColumnListing('pegawais');
@@ -25,7 +26,7 @@ class DashboardController extends Controller
         $kolomBerkas = array_diff($kolomBerkas, $kolomBerkasTidakDiinginkan);
 
         // Cek Kelengkapan Berkas
-        $pegawai->kelengkapan_berkas = $pegawai->cekKelengkapanBerkas($kolomBerkas);
+        $pegawai->kelengkapan_berkas = $pegawai->cekKelengkapanBerkas($kolomBerkas, 2024);
 
         // Inisialisasi status profil
         $statusProfil = ['Lengkap', 'success'];

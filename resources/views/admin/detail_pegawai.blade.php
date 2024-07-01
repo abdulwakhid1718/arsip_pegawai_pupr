@@ -68,30 +68,26 @@
                                         <h6>: {{ $pegawai->no_hp }}</h6>
                                     </div>
                                 </div>
-                                @if ($pegawai->berkas)
-                                    <div class="row mt-3">
-                                        <h3>BERKAS</h3>
-                                        <hr>
-                                        <div class="col-4">
-                                            @foreach ($nama_kolom as $kolom)
-                                                <h6>{{ $kolom }}</h6>
-                                            @endforeach
-                                        </div>
-                                        <div class="col-8">
-                                            @foreach ($nama_kolom as $kolom)
-                                                <h6>:
-                                                    @if (!empty($pegawai->berkas->{$kolom}))
-                                                        <a href="">{{ $pegawai->berkas->{$kolom} }}</a>
-                                                    @else
-                                                        Dokumen tidak tersedia
-                                                    @endif
-                                                </h6>
-                                            @endforeach
-                                        </div>
-
+                                <div class="row mt-3">
+                                    <h3>BERKAS</h3>
+                                    <hr>
+                                    <div class="col-4">
+                                        @foreach ($nama_kolom as $kolom)
+                                            <h6>{{ $kolom }}</h6>
+                                        @endforeach
                                     </div>
-                                @endif
-
+                                    <div class="col-8">
+                                        @foreach ($nama_kolom as $kolom)
+                                            <h6>:
+                                                @if (!empty($pegawai->berkas->{$kolom}))
+                                                    <a href="">{{ $pegawai->berkas->{$kolom} }}</a>
+                                                @else
+                                                    Dokumen tidak tersedia
+                                                @endif
+                                            </h6>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

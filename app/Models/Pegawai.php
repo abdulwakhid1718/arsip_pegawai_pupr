@@ -34,20 +34,26 @@ class Pegawai extends Model
         return $this->hasMany(Berkas::class);
     }
 
-    public function cekKelengkapanBerkas($namaKolom)
+    public function cekKelengkapanBerkas($namaKolom, $tahun)
     {
+        $berkas = Berkas::where('tahun', $tahun)->first();
+
+        if (!$berkas) {
+            // Jika tidak ada berkas untuk tahun ini, anggap belum lengkap
+            return ['status' => 'Belum Lengkap', 'badge' => 'danger'];
+        }
+
         $kelengkapan = [];
 
         // Inisialisasi status kelengkapan berkas
         foreach ($namaKolom as $kolom) {
-            $kelengkapan[$kolom] = !empty($this->berkas->{$kolom});
+            $kelengkapan[$kolom] = !empty($berkas->{$kolom});
         }
 
         // Periksa apakah semua berkas yang diperlukan telah diisi
         $lengkap = !in_array(false, $kelengkapan, true);
 
-        $lengkap = $lengkap ? ['status' => 'Lengkap', 'badge' => 'success'] : ['status' => 'Belum Lengkap', 'badge' => 'danger'];
+        return $lengkap ? ['status' => 'Lengkap', 'badge' => 'success'] : ['status' => 'Belum Lengkap', 'badge' => 'danger'];
+    }
 
-        return $lengkap;
-    } 
 }

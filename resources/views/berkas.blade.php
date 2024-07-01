@@ -10,7 +10,6 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    {{-- @dd($years) --}}
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
@@ -23,9 +22,9 @@
                                         <label for="tahun">Pilih Tahun:</label>
                                         <select name="tahun" id="tahun" class="form-control"
                                             onchange="this.form.submit()">
-                                            @foreach ($years as $year)
+                                            @foreach ($recentYears as $year)
                                                 <option value="{{ $year }}"
-                                                    @if ($year == request('tahun')) selected @endif>{{ $year }}
+                                                    @if ($year == $selectedYear) selected @endif>{{ $year }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -34,9 +33,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <a href="berkas/{{ $berkas[0]->id }}/edit" class="btn btn-success mb-3"><i
-                                            class="bi bi-upload"></i>
-                                        Upload Berkas</a>
+                                    <a href="berkas/{{ $berkas[0]->id }}/edit" class="btn btn-success mb-3">
+                                        <i class="bi bi-upload"></i> Upload Berkas
+                                    </a>
                                     <table id="dataBerkas"
                                         class="table table-bordered table-striped dataTable dtr-inline collapsed"
                                         aria-describedby="example1_info">
@@ -58,7 +57,7 @@
                                         {{-- @dd($berkas) --}}
                                         <tbody>
                                             @foreach ($kolom as $i => $kolomBerkas)
-                                                <tr class="@if ($i - (1 % 2) == 0) odd @else even @endif">
+                                                <tr class="@if ($i % 2 == 0) odd @else even @endif">
                                                     <td>{{ $kolomBerkas }}</td>
                                                     <td>
                                                         @if (empty($berkas[0][$kolomBerkas]))
@@ -68,7 +67,6 @@
                                                                 href="/berkas/{{ $berkas[0]->id }}/download/{{ $kolomBerkas }}">{{ $berkas[0][$kolomBerkas] }}</a>
                                                         @endif
                                                     </td>
-
                                                     <td class="d-lg-flex gap-1">
                                                         <a href="/pegawai/{{ $kolomBerkas }}"
                                                             class="btn btn-sm btn-danger"><i class="bi bi-eye"></i></a>

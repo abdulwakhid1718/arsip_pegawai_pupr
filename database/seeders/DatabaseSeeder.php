@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $users = [
-            ['nip' => '197803202001121003', 'role' => 'admin', 'email' => 'rizal@example.com', 'password' => bcrypt('password')],
+            ['nip' => '197803202001121003', 'email' => 'rizal@example.com', 'password' => bcrypt('password')],
             ['nip' => '198511142010012016', 'role' => 'kasubag', 'email' => 'uswatun@example.com', 'password' => bcrypt('password')],
             ['nip' => '199512302022032004', 'email' => 'nanda@example.com', 'password' => bcrypt('password')],
             ['nip' => '198011252007012005', 'email' => 'suhariyanti@example.com', 'password' => bcrypt('password')],
             ['nip' => '196906132010011002', 'email' => 'surya@example.com', 'password' => bcrypt('password')],
-            ['nip' => '199902062022031002', 'email' => 'iqbal@example.com', 'password' => bcrypt('password')],
+            ['nip' => '199902062022031002','role' => 'admin', 'email' => 'iqbal@example.com', 'password' => bcrypt('password')],
             ['nip' => '198312252010012002', 'email' => 'ummi@example.com', 'password' => bcrypt('password')],
             ['nip' => '199708082022031005', 'email' => 'triago@example.com', 'password' => bcrypt('password')],
             ['nip' => '198211192009031002', 'email' => 'rudiantoro@example.com', 'password' => bcrypt('password')],
@@ -127,6 +127,7 @@ class DatabaseSeeder extends Seeder
             ["nama" => "Kabid Bina Marga", "kelompok_jabatan" => "Struktural", "bidang_id" => "3"],
             ["nama" => "Perencana Ahli Muda", "kelompok_jabatan" => "Fungsional PJ", "bidang_id" => "3"],
             ["nama" => "Teknik Jalan dan Jembatan Ahli Muda", "kelompok_jabatan" => "Fungsional PJ", "bidang_id" => "3"],
+            ["nama" => "Analis Pengelolaan Sumber Daya Air", "kelompok_jabatan" => "Pelaksana", "bidang_id" => "3"],
             ["nama" => "Teknik Jalan dan Jembatan Ahli Pertama", "kelompok_jabatan" => "Fungsional", "bidang_id" => "3"],
             ["nama" => "Penelaah Pengelolaan Leger Jalan", "kelompok_jabatan" => "Pelaksana", "bidang_id" => "3"],
             ["nama" => "Analis Sistem Jaringan Jalan Jembatan", "kelompok_jabatan" => "Pelaksana", "bidang_id" => "3"],

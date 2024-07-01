@@ -6,6 +6,7 @@ use App\Models\Berkas;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBerkasRequest;
@@ -45,18 +46,47 @@ class BerkasController extends Controller
             ->orderBy('tahun', 'desc')
             ->pluck('tahun')
             ->toArray();
-
+    
+        // Mendapatkan 3 tahun terakhir
+        $currentYear = date('Y');
+        $recentYears = [];
+        for ($i = 0; $i < 3; $i++) {
+            $year = $currentYear - $i;
+            if (!in_array($year, $years)) {
+                $years[] = $year;
+            }
+            $recentYears[] = $year;
+        }
+        
+        // Mengurutkan recentYears dalam urutan menurun
+        rsort($recentYears);
+    
         // Mendapatkan tahun yang dipilih dari query string, atau tahun saat ini jika tidak ada
-        $selectedYear = $request->input('tahun', date('Y'));
-
-        // Mengambil data berkas berdasarkan tahun yang dipilih
+        $selectedYear = $request->input('tahun', $currentYear);
+    
+        // Mengecek apakah berkas untuk tahun yang dipilih sudah ada
         $berkas = Berkas::where('tahun', $selectedYear)->get();
-
+    
+        $id = Auth::user()->pegawai->id;
+    
+        if ($berkas->isEmpty()) {
+            // Jika berkas tidak ada, tambahkan berkas baru dengan tahun yang dipilih
+            $berkasBaru = new Berkas();
+            $berkasBaru->tahun = $selectedYear;
+            $berkasBaru->pegawai_id = $id;
+            $berkasBaru->save();
+    
+            // Mengambil kembali data berkas setelah penambahan
+            $berkas = Berkas::where('tahun', $selectedYear)->get();
+        }
+    
         // Kolom yang akan ditampilkan
         $kolom = ['ktp', 'sk_pengangkatan', 'sk_pangkat', 'sk_berkala', 'sk_jabatan', 'ijazah', 'sk_tugas_ijin_belajar', 'sk_impassing', 'sk_mutasi', 'sumpah_pegawai', 'sertifikat_kediklatan', 'skp'];
-
-        return view('berkas', compact('berkas', 'kolom', 'years', 'selectedYear'));
+    
+        return view('berkas', compact('berkas', 'kolom', 'recentYears', 'selectedYear'));
     }
+    
+
 
     /**
      * Show the form for creating a new resource.

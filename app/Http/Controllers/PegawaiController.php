@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pegawai;
+use App\Models\User;
 use App\Models\Bidang;
 use App\Models\Jabatan;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Gate;
 
 
 class PegawaiController extends Controller
@@ -62,7 +64,48 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nip' => 'required|string|max:20',
+            'tempat_lahir' => 'required|string|max:50',
+            'tanggal_lahir' => 'required|date',
+            'bidang_id' => 'required|integer',
+            'pendidikan' => 'required|string|max:20',
+            'alamat' => 'nullable|string|max:255',
+            'no_hp' => 'nullable|string|max:15',
+            'name' => 'required|string|max:100',
+            'jenis_kelamin' => 'required|string|max:10',
+            'jabatan_id' => 'required|integer',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user = new User;
+        $user->nip = $request->nip;
+        $user->password = Hash::make('password');
+        $user->save();
+
+        $lastUser = User::latest()->first();
+        
+        $pegawai = new Pegawai;
+        $pegawai->user_id = $lastUser->id;
+        $pegawai->tempat_lahir = $request->tempat_lahir;
+        $pegawai->tanggal_lahir = $request->tanggal_lahir;
+        $pegawai->bidang_id = $request->bidang_id;
+        $pegawai->pendidikan = $request->pendidikan;
+        $pegawai->alamat = $request->alamat;
+        $pegawai->no_hp = $request->no_hp;
+        $pegawai->name = $request->name;
+        $pegawai->jenis_kelamin = $request->jenis_kelamin;
+        $pegawai->jabatan_id = $request->jabatan_id;
+
+        if ($request->hasFile('foto')) {
+            $imageName = time().'.'.$request->foto->extension();
+            $request->foto->move(public_path('images'), $imageName);
+            $pegawai->foto = $imageName;
+        }
+
+        $pegawai->save();
+
+        return redirect('/pegawai')->with('success', 'Data Pegawai berhasil ditambahkan.');
     }
 
     /**
