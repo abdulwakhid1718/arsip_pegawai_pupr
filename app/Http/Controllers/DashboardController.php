@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 
 
@@ -26,7 +27,7 @@ class DashboardController extends Controller
         $kolomBerkas = array_diff($kolomBerkas, $kolomBerkasTidakDiinginkan);
 
         // Cek Kelengkapan Berkas
-        $pegawai->kelengkapan_berkas = $pegawai->cekKelengkapanBerkas($kolomBerkas, 2024);
+        $pegawai->kelengkapan_berkas = $pegawai->cekKelengkapanBerkas(2024, Auth::user()->pegawai->id);
 
         // Inisialisasi status profil
         $statusProfil = ['Lengkap', 'success'];

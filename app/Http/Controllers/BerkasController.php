@@ -65,19 +65,19 @@ class BerkasController extends Controller
         $selectedYear = $request->input('tahun', $currentYear);
     
         // Mengecek apakah berkas untuk tahun yang dipilih sudah ada
-        $berkas = Berkas::where('tahun', $selectedYear)->get();
-    
-        $id = Auth::user()->pegawai->id;
+        $berkas = Berkas::where('tahun', $selectedYear)
+                        ->where('pegawai_id', Auth::user()->pegawai->id)->get();
     
         if ($berkas->isEmpty()) {
             // Jika berkas tidak ada, tambahkan berkas baru dengan tahun yang dipilih
             $berkasBaru = new Berkas();
             $berkasBaru->tahun = $selectedYear;
-            $berkasBaru->pegawai_id = $id;
+            $berkasBaru->pegawai_id = Auth::user()->pegawai->id;
             $berkasBaru->save();
     
             // Mengambil kembali data berkas setelah penambahan
-            $berkas = Berkas::where('tahun', $selectedYear)->get();
+            $berkas = Berkas::where('tahun', $selectedYear)
+                ->where('pegawai_id', Auth::user()->pegawai->id)->get();
         }
     
         // Kolom yang akan ditampilkan

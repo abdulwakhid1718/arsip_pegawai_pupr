@@ -37,7 +37,7 @@ class PegawaiController extends Controller
 
         // Memeriksa kelengkapan berkas untuk setiap pegawai
         foreach ($pegawais as $pegawai) {
-            $pegawai->kelengkapan_berkas = $pegawai->cekKelengkapanBerkas($kolomBerkas);
+            $pegawai->kelengkapan_berkas = $pegawai->cekKelengkapanBerkas(2024, $pegawai->id);
         }
 
         confirmDelete(self::$title, self::$text);
@@ -84,7 +84,7 @@ class PegawaiController extends Controller
         $user->save();
 
         $lastUser = User::latest()->first();
-        
+
         $pegawai = new Pegawai;
         $pegawai->user_id = $lastUser->id;
         $pegawai->tempat_lahir = $request->tempat_lahir;
